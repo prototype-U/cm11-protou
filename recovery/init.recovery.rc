@@ -1,0 +1,86 @@
+on early-init
+    start ueventd
+
+on init
+    export PATH /sbin
+    export LD_LIBRARY_PATH .:/sbin
+    export ANDROID_ROOT /system
+    export ANDROID_DATA /data
+    export EXTERNAL_STORAGE /sdcard
+
+    symlink /system/etc /etc
+    symlink /sbin/busybox /sbin/sh
+
+    chmod 0755 /sbin/busybox
+
+    mkdir /sdcard
+    mkdir /system
+    mkdir /data
+    mkdir /data/data
+    mkdir /emmc
+    mkdir /cache
+    mkdir /mtdcache
+    mkdir /devlog
+    mount /tmp /tmp tmpfs
+
+on boot
+
+    ifup lo
+    hostname localhost
+    domainname localdomain
+
+    class_start default
+
+service ueventd /sbin/ueventd
+    critical
+    
+service choice_fn /sbin/choice_fn
+    oneshot
+
+service recovery /sbin/recovery
+    disabled
+    
+service adbd /sbin/adbd recovery
+    disabled
+
+service power_test /sbin/power_test
+    disabled
+    oneshot
+
+service offmode_charging /sbin/offmode_charging
+    disabled
+    oneshot
+
+service detect_key /sbin/detect_key
+    oneshot
+
+# Always start adbd on userdebug and eng builds
+on property:ro.debuggable=1
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 18D1
+    write /sys/class/android_usb/android0/idProduct D001
+    write /sys/class/android_usb/android0/functions mass_storage,adb
+    write /sys/class/android_usb/android0/enable 1
+    write /sys/class/android_usb/android0/iManufacturer $ro.product.manufacturer
+    write /sys/class/android_usb/android0/iProduct $ro.product.model
+    write /sys/class/android_usb/android0/iSerial $ro.serialno
+    start adbd
+    setprop service.adb.root 1
+
+# Restart adbd so it can run as root
+on property:service.adb.root=1
+    write /sys/class/android_usb/android0/enable 0
+    restart adbd
+    write /sys/class/android_usb/android0/enable 1
+
+service rmt_storage /sbin/rmt_storage /dev/block/mmcblk0p13 /dev/block/mmcblk0p14
+    user root
+    default
+
+on property:ro.emmc=1
+    start rmt_storage
+
+on property:ro.bootmode=power_test
+   write /sys/module/pm2/modes/cpu0/standalone_power_collapse/suspend_enabled 1
+   write /sys/module/pm2/modes/cpu1/standalone_power_collapse/suspend_enabled 1
+   write /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled 1

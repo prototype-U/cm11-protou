@@ -1,0 +1,212 @@
+#
+# system.prop for device
+#
+
+# Telephony
+rild.libpath=/system/lib/libhtc_ril.so
+#rild.libpath=/system/lib/libril-qc-1.so
+rild.libargs=-d /dev/smd0
+ro.telephony.ril.v3=signalstrength,skipradiooff,singlepdp,skipbrokendatacall
+ro.telephony.ril_class=HTCQualcommRIL
+ril.subscription.types=NV,RUIM
+DEVICE_PROVISIONED=1
+
+# Baseband
+ro.baseband.arch = msm
+
+# +porting from pyramid by RIL_Jared.
+# Modify MMS APN retry timer from 5s to 2s.
+ro.gsm.2nd_data_retry_config = max_retries=3, 2000, 2000, 2000
+
+# RF team request
+ro.ril.enable.dtm = 0
+ro.ril.gprsclass = 12
+ro.ril.hsdpa.category = 8
+ro.ril.hsupa.category = 6
+ro.ril.hsxpa = 2
+
+# Default network type
+# 0 => WCDMA Preferred.
+ro.telephony.default_network = 0
+
+# Protou RIL
+ro.ril.ecc.VODA-Africa-South=112,911,999
+ro.ril.ecc.HTC-GCC=999,112,997
+ro.ril.ecc.HTC-WWE=999
+ro.ril.ecc.HTC-Dutch=112
+ro.ril.ecc.HTC-SPA=112, 911
+ro.ril.ecc.HTC-FRA=112,911
+ro.ril.ecc.HTC-ITA=112,911
+ro.ril.ecc.HTC-EastEurope=112
+ro.ril.enable.a52.HTC-ITA=1
+ro.ril.enable.a53.HTC-ITA=1
+ro.ril.enable.a52=0
+ro.ril.enable.a53=1
+ro.ril.enable.dtm=0
+ro.ril.radio.svn=1
+ro.ril.disable.fd.plmn.prefix=23402,23410,23411,23420,27202
+ro.ril.enable.managed.roaming=1
+ro.ril.enable.sdr=1
+ro.ril.enable.amr.wideband=1
+ro.ril.rxd.mode.nv=10
+ro.ril.enable.rxd=1
+ro.ril.enable.r8fd=0
+ro.ril.enable.pre_r8fd=1
+ro.ril.fd.pre_r8_tout.scr_off=2
+ro.ril.fd.pre_r8_tout.scr_on=3
+ro.ril.fd.r8_tout.scr_off=0
+ro.ril.fd.r8_tout.scr_on=0
+ro.ril.enable.enhance.search=1
+
+# Modify MTU from 1500 to 1472 on 3G network
+ro.ril.set.mtusize = 1472
+ro.ril.set.mtu1472 = 1
+
+mobiledata.interfaces=rmnet0,rmnet1,gprs,ppp0
+
+# Wi-Fi
+wifi.interface=wlan0
+wifi.supplicant_scan_interval=180
+wifi.softap.interface=wlan0
+wifi.softapconcurrent.interface=wl0.1
+
+# Define TCP buffer sizes
+net.tcp.buffersize.default=4096,87380,110208,4096,16384,110208
+net.tcp.buffersize.wifi=524288,1048576,2097152,262144,524288,1048576
+net.tcp.buffersize.hsdpa=4094,87380,1220608,4096,16384,122060
+
+# Display
+ro.sf.lcd_density=240
+
+debug.sf.hw=1
+debug.gr.numframebuffers=3
+debug.composition.type = gpu
+debug.composition.8x25.type=dyn
+debug.enabletr = false
+debug.qctwa.preservebuf = 1
+debug.egl.buffcount=4
+ro.bq.gpu_to_cpu_unsupported=1
+
+# Speed gpu interface
+video.accelerate.hw=1
+debug.performance.tuning=1
+windowsmgr.max_events_per_sec=60
+
+# View configuration for QVGA
+view.fading_edge_length = 8
+view.touch_slop = 15
+view.minimum_fling_velocity = 25
+view.scroll_friction = 0.008
+
+# Media
+ro.media.enc.jpeg.quality=100
+ro.media.dec.jpeg.memcap=8000000
+ro.media.enc.hprof.vid.bps=8000000
+
+# For PDP overlap problem
+ro.ril.avoid.pdp.overlap = 1
+
+#For NITZ power saving mode
+ro.ril.enable.nitz = 3
+
+# For the agps default value
+ro.ril.def.agps.mode = 2
+
+# For HSDPA low throughput
+ro.ril.disable.power.collapse = 1
+
+# The OpenGL ES API level that is natively supported by this device.
+# This is a 16.16 fixed point number
+ro.opengles.version = 131072
+
+# For no auto focus devices
+ro.workaround.noautofocus = 1
+
+# Increase SKIA decode memory capability for progressive jpg file
+ro.media.dec.jpeg.memcap = 20000000
+
+# For QC perf binary hooks
+# src:vendor/qcom/proprietary/android-perf/release/lib/<CPU arch>/libqc-opt.so
+com.qc.hardware=true
+ro.vendor.extension_library=/system/lib/libqc-opt.so
+dev.pm.dyn_samplingrate=1
+dev.pm.dyn_sample_period=700000
+
+# HTC Acoustic
+htc.audio.alc.enable = 1
+htc.audio.swalt.enable = 1
+
+ro.fm.analogpath.supported=true
+ro.fm.transmitter=false
+ro.fm.mulinst.recording.support=false
+
+# For quick boot mode
+persist.sys.shutdown.mode = hibernate
+
+media.stagefright.enable-player=true
+media.stagefright.enable-meta=false
+media.stagefright.enable-scan=false
+media.stagefright.enable-http=true
+media.stagefright.enable-aac=true
+media.stagefright.enable-qcp=true
+
+# Display
+debug.composition.8x25.type=dyn
+debug.composition.type=gpu
+ro.hw_plat=8x25
+ro.bq.gpu_to_cpu_unsupported=1
+ro.max.fling_velocity=4000
+com.qc.hdmi_out=false
+debug.qctwa.statusbar=1
+debug.qctwa.preservebuf=1
+debug.gr.numframebuffers=3
+debug.qc.hardware=true
+debug.enabletr=false
+debug.hwui.render_dirty_regions=false
+debug.sf.hw=1
+ro.staticwallpaper.pixelformat=RGB_565
+debug.hwc.dynThreshold=1.9
+
+# For INS phone storage
+ro.phone_storage = 1
+ro.3LM_SD_ENCRYPT=false
+
+# For ext4 file system
+ro.ext4fs = 1
+
+# For OTG usb storage
+ro.usb_host = 1
+
+# DalvikVM
+dalvik.vm.heapgrowthlimit=48m
+dalvik.vm.heapsize=128m
+dalvik.vm.checkjni=0
+dalvik.vm.checkjni=false
+dalvik.vm.dexopt-data-only=1
+dalvik.vm.dexopt-flags=v=a,o=v,m=y,u=y
+dalvik.vm.execution-mode=int:jit
+
+#swalt
+htc.audio.swalt.enable=1
+htc.audio.swalt.mingain=14512
+
+# Low Power Audio
+lpa.decode=true
+lpa30.decode=true
+audio.decoder_override_check=true
+use.non-omx.mp3.decoder=true
+use.non-omx.aac.decoder=true
+
+# System prop to select audio resampler quality
+af.resampler.quality=255
+ 
+# Memory
+persist.sys.purgeable_assets=1
+
+# USB
+persist.sys.usb.config=mtp,adb
+ro.emmc.sdcard.partition=31
+ro.vold.umsdirtyratio=50
+
+# System prop for enabling discontinuity for HLS Variant Playlist
+httplive.enable.discontinuity = true

@@ -1,0 +1,24 @@
+on emmc
+
+    mkdir /system
+    mkdir /data 0771 system system
+    mkdir /cache 0770 system cache
+    mkdir /devlog 0700 root root
+    devwait emmc@system
+    mount ext4 emmc@system /system rw data=ordered
+    umount /system
+
+#
+#  Create a remote storage service in recovery mode if eMMC booting
+#
+service rmt_storage /sbin/rmt_storage /dev/block/mmcblk0p13 /dev/block/mmcblk0p14
+    user root
+    default
+
+on property:ro.emmc=1
+    start rmt_storage
+
+on property:ro.bootmode=power_test
+   write /sys/module/pm2/modes/cpu0/standalone_power_collapse/suspend_enabled 1
+   write /sys/module/pm2/modes/cpu1/standalone_power_collapse/suspend_enabled 1
+   write /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled 1
